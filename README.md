@@ -1,4 +1,4 @@
-# information-security-assignment
+# Information Security Assignment
 
 ## General TODO (login procedure)
 - Read from the passwords db file
