@@ -1,11 +1,11 @@
-# information-security-assignment
+# Information Security Assignment
 
-## General TODO (login procedure)
+### General TODO (login procedure)
 - Read from the passwords db file
   - Parse for the pass and username
   - Can use a data structure to store the username and hashed pass 
 - Some form of an interface
-  - Just a cmd interface
+  - Just a CMD interface
   - Which takes in the user input
     - For username and password
 - Hashing function which uses OpenSSL
