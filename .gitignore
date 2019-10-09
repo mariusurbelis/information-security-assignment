@@ -1,2 +1,3 @@
 *.o
 login
+grade.cpp
