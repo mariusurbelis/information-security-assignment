@@ -3,7 +3,7 @@
 ### General TODO (login procedure)
 - Read from the passwords db file
   - Parse for the pass and username
-  - Can use a data structure to store the username and hashed pass 
+  - ~~Can use a data structure to store the username and hashed pass~~
 - Some form of an interface
   - Just a CMD interface
   - Which takes in the user input
