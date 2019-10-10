@@ -36,8 +36,13 @@ int main()
 }
 
 
+// Takes in two string paramaters and compares them
+// if both strings are the same, return true. If not, return false
 boolean passCompare(string user_input, string stored_pass)
 {
+
+	// variable x contains an number for the result of the comparison of the two strings
+	// 0 = the same. else = not the same
 	int x = user_input.compare(stored_pass);
 	if (x == 0){
 		return true;
