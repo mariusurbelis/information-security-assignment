@@ -9,8 +9,8 @@
 
 using namespace std;
 
-const string DB_FILE_NAME = "pwdb.txt;
-  
+const string DB_FILE_NAME = "pwdb.txt";
+
 vector<array<string, 2>> database;
 
 /**
@@ -44,16 +44,21 @@ void db_parse_line(string line)
   database.push_back({tokens[0], tokens[1]});
 }
 
-int import_cred_db(const string db_file_name){
+int import_cred_db(const string db_file_name)
+{
   ifstream db_file(db_file_name);
   string db_line;
-  if(db_file.is_open()){
-    while (getline(db_file,db_line)){
+  if (db_file.is_open())
+  {
+    while (getline(db_file, db_line))
+    {
       //cout << db_line<<endl;
       db_parse_line(db_line);
     }
     db_file.close();
-  } else {
+  }
+  else
+  {
     cout << "Unable to read password db file" << endl;
     return 1;
   }
