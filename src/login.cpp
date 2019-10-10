@@ -33,20 +33,6 @@ string sha256(const string str)
   return ss.str();
 }
 
-<<<<<<<
-void db_parse_line(string line)
-{
-  istringstream tokenStream(line);
-  vector<string> tokens;
-  string token;
-
-  while (getline(tokenStream, token, ':'))
-    tokens.push_back(token);
-
-  database.push_back({tokens[0], tokens[1]});
-}
-
-=======
 // Takes in two string paramaters and compares them
 // if both strings are the same, return true. If not, return false
 bool passCompare(string user_input, string stored_pass)
@@ -97,7 +83,6 @@ int import_cred_db(const string db_file_name)
   return 0;
 }
 
->>>>>>>
 int main()
 {
   import_cred_db(DB_FILE_NAME);
