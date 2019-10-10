@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -27,6 +28,18 @@ string sha256(const string str)
     ss << hex << setw(2) << setfill('0') << (int)hash[i];
   }
   return ss.str();
+}
+
+void db_parse_line(string line)
+{
+  istringstream tokenStream(line);
+  vector<string> tokens;
+  string token;
+
+  while (getline(tokenStream, token, ':'))
+    tokens.push_back(token);
+
+  database.push_back({tokens[0], tokens[1]});
 }
 
 int main()
