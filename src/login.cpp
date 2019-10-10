@@ -5,10 +5,13 @@
 #include <sstream>
 #include <iomanip>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
 const string DB_FILE_NAME = "pwdb.txt;
+  
+vector<array<string, 2>> database;
 
 /**
  * Source of hash function: 
@@ -27,6 +30,18 @@ string sha256(const string str)
     ss << hex << setw(2) << setfill('0') << (int)hash[i];
   }
   return ss.str();
+}
+
+void db_parse_line(string line)
+{
+  istringstream tokenStream(line);
+  vector<string> tokens;
+  string token;
+
+  while (getline(tokenStream, token, ':'))
+    tokens.push_back(token);
+
+  database.push_back({tokens[0], tokens[1]});
 }
 
 int import_cred_db(const string db_file_name){
