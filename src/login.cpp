@@ -4,10 +4,13 @@
 #include <openssl/sha.h>
 #include <sstream>
 #include <iomanip>
+#include <fstream>
 #include <vector>
 #include <sstream>
 
 using namespace std;
+
+const string DB_FILE_NAME = "pwdb.txt";
 
 vector<array<string, 2>> database;
 
@@ -30,6 +33,7 @@ string sha256(const string str)
   return ss.str();
 }
 
+<<<<<<<
 void db_parse_line(string line)
 {
   istringstream tokenStream(line);
@@ -42,12 +46,65 @@ void db_parse_line(string line)
   database.push_back({tokens[0], tokens[1]});
 }
 
+=======
+// Takes in two string paramaters and compares them
+// if both strings are the same, return true. If not, return false
+bool passCompare(string user_input, string stored_pass)
+{
+  // variable x contains an number for the result of the comparison of the two strings
+  // 0 = the same. else = not the same
+  int x = user_input.compare(stored_pass);
+  if (x == 0)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+void db_parse_line(string line)
+{
+  istringstream tokenStream(line);
+  vector<string> tokens;
+  string token;
+
+  while (getline(tokenStream, token, ':'))
+    tokens.push_back(token);
+
+  database.push_back({tokens[0], tokens[1]});
+}
+
+int import_cred_db(const string db_file_name)
+{
+  ifstream db_file(db_file_name);
+  string db_line;
+  if (db_file.is_open())
+  {
+    while (getline(db_file, db_line))
+    {
+      //cout << db_line<<endl;
+      db_parse_line(db_line);
+    }
+    db_file.close();
+  }
+  else
+  {
+    cout << "Unable to read password db file" << endl;
+    return 1;
+  }
+  return 0;
+}
+
+>>>>>>>
 int main()
 {
+  import_cred_db(DB_FILE_NAME);
   //bool auth = true;
 
   //if (auth) authenticated("user");
   //else rejected("user");
 
-  cout << sha256("TEST") << endl;
+  //cout << sha256("TEST") << endl;
 }
