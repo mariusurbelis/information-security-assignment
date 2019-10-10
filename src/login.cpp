@@ -10,6 +10,22 @@ using namespace std;
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
 */
+
+string userName; 
+string pswd; 
+
+usrInput(){
+cout<<"Enter your username"<<"Enter your password"<<endl;
+cin>>userName>>pswd; 
+
+sha256(pswd);
+
+
+}
+
+
+
+
 string sha256(const string str)
 {
   unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -24,6 +40,8 @@ string sha256(const string str)
   }
   return ss.str();
 }
+
+
 
 int main()
 {
