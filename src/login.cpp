@@ -1,7 +1,7 @@
 #include <iostream>
 #include "authlib.h"
 #include <string>
-#include <openssl/sha.h>
+#include "openssl-1.1.1c/crypto/sha"
 #include <sstream>
 #include <iomanip>
 using namespace std;
@@ -15,10 +15,14 @@ string userName;
 string pswd; 
 
 void usrInput(){
-  cout<<"Enter your username"<<"Enter your password"<<endl;
-  cin>>userName>>pswd; 
 
-  sha256(pswd);
+    cout<<"Enter your username"<<endl;
+    cin>>userName;
+
+    cout<<"Enter your password"<<endl;
+    cin>>pswd;
+
+    sha256(pswd);
 
 
 } 
@@ -49,6 +53,7 @@ int main()
 
   //if (auth) authenticated("user");
   //else rejected("user");
-  usrInput
-  cout << sha256() << endl;
+  usrInput();
+  string a;
+  cout << sha256(a) << endl;
 }
