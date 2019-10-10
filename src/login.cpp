@@ -34,3 +34,14 @@ int main()
 
   cout << sha256("TEST") << endl;
 }
+
+
+boolean passCompare(string user_input, string stored_pass)
+{
+	int x = user_input.compare(stored_pass);
+	if (x == 0){
+		return true;
+	}else{
+		return false;
+	}
+}
