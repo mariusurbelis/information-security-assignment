@@ -8,6 +8,8 @@
 
 using namespace std;
 
+const string DB_FILE_NAME = "pwdb.txt;
+
 /**
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
@@ -45,7 +47,7 @@ int import_cred_db(const string db_file_name){
 
 int main()
 {
-  import_cred_db("pwdb.txt");
+  import_cred_db(DB_FILE_NAME);
   //bool auth = true;
 
   //if (auth) authenticated("user");
