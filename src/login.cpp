@@ -4,6 +4,8 @@
 #include <openssl/sha.h>
 #include <sstream>
 #include <iomanip>
+#include <fstream>
+
 using namespace std;
 
 /**
@@ -25,12 +27,29 @@ string sha256(const string str)
   return ss.str();
 }
 
+int import_cred_db(const string db_file_name){
+  ifstream db_file(db_file_name);
+  string db_line;
+  if(db_file.is_open()){
+    while (getline(db_file,db_line)){
+      //cout << db_line<<endl;
+      db_parse_line(db_line);
+    }
+    db_file.close();
+  } else {
+    cout << "Unable to read password db file" << endl;
+    return 1;
+  }
+  return 0;
+}
+
 int main()
 {
+  import_cred_db("pwdb.txt");
   //bool auth = true;
 
   //if (auth) authenticated("user");
   //else rejected("user");
 
-  cout << sha256("TEST") << endl;
+  //cout << sha256("TEST") << endl;
 }
