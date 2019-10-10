@@ -29,6 +29,18 @@ string sha256(const string str)
   return ss.str();
 }
 
+void db_parse_line(string line)
+{
+  istringstream tokenStream(line);
+  vector<string> tokens;
+  string token;
+
+  while (getline(tokenStream, token, ':'))
+    tokens.push_back(token);
+
+  database.push_back({tokens[0], tokens[1]});
+}
+
 int main()
 {
   //bool auth = true;
