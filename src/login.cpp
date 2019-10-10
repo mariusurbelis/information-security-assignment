@@ -4,7 +4,11 @@
 #include <openssl/sha.h>
 #include <sstream>
 #include <iomanip>
+#include <vector>
+
 using namespace std;
+
+vector<array<string, 2>> database;
 
 /**
  * Source of hash function: 
