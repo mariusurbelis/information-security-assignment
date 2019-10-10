@@ -14,14 +14,14 @@ using namespace std;
 string userName; 
 string pswd; 
 
-usrInput(){
-cout<<"Enter your username"<<"Enter your password"<<endl;
-cin>>userName>>pswd; 
+void usrInput(){
+  cout<<"Enter your username"<<"Enter your password"<<endl;
+  cin>>userName>>pswd; 
 
-sha256(pswd);
+  sha256(pswd);
 
 
-}
+} 
 
 
 
@@ -49,6 +49,6 @@ int main()
 
   //if (auth) authenticated("user");
   //else rejected("user");
-
-  cout << sha256("TEST") << endl;
+  usrInput
+  cout << sha256() << endl;
 }
