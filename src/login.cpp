@@ -49,7 +49,14 @@ bool passCompare(string user_input, string stored_pass)
     return false;
   }
 }
-
+/**
+ *  db_parse_line function parses an input string
+ *  which contains a username and password split
+ *  using a colon ":". The username and password
+ *  are stored inside a vector called database.
+ * 
+ *  @param line is the input string
+*/
 void db_parse_line(string line)
 {
   istringstream tokenStream(line);
