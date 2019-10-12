@@ -31,7 +31,9 @@ string sha256(const string str)
 string userName; 
 string psswd; 
 
-
+/**
+ *Function that fulfils the role of interacting with user by taking user input 
+ */
 void usrInput(){
 
     cout<<"Enter your username"<<endl;
