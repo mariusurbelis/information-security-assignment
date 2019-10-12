@@ -1,12 +1,12 @@
 #include <iostream>
-#include "authlib.h"
+#include <string.h>
 #include <string>
 #include <openssl/sha.h>
 #include <sstream>
 #include <iomanip>
-#include <string.h>
 #include <fstream>
 #include <vector>
+#include "authlib.h"
 
 using namespace std;
 
@@ -34,24 +34,23 @@ string sha256(const string str)
   return ss.str();
 }
 
-string userName; 
-string psswd; 
+string userName;
+string psswd;
 
 /**
  *Function that fulfils the role of interacting with user by taking user input 
  */
-void usrInput(){
+void usrInput()
+{
 
-    cout<<"Enter your username"<<endl;
-    cin>>userName;
+  cout << "Enter your username" << endl;
+  cin >> userName;
 
-    cout<<"Enter your password"<<endl;
-    cin>>psswd;
+  cout << "Enter your password" << endl;
+  cin >> psswd;
 
-    sha256(psswd);
-
-
-} 
+  sha256(psswd);
+}
 
 // Takes in two string paramaters and compares them
 // if both strings are the same, return true. If not, return false
