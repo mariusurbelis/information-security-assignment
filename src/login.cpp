@@ -1,34 +1,17 @@
 #include <iostream>
 #include "authlib.h"
 #include <string>
-#include "openssl-1.1.1c/crypto/sha"
+#include <openssl/sha.h>
 #include <sstream>
 #include <iomanip>
+#include <string.h>
 using namespace std;
-
+// Function declaration 
+  
 /**
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
 */
-
-string userName; 
-string pswd; 
-
-void usrInput(){
-
-    cout<<"Enter your username"<<endl;
-    cin>>userName;
-
-    cout<<"Enter your password"<<endl;
-    cin>>pswd;
-
-    sha256(pswd);
-
-
-} 
-
-
-
 
 string sha256(const string str)
 {
@@ -45,6 +28,23 @@ string sha256(const string str)
   return ss.str();
 }
 
+string userName; 
+string psswd; 
+
+
+void usrInput(){
+
+    cout<<"Enter your username"<<endl;
+    cin>>userName;
+
+    cout<<"Enter your password"<<endl;
+    cin>>psswd;
+
+    sha256(psswd);
+
+
+} 
+
 
 
 int main()
@@ -57,3 +57,4 @@ int main()
   string a;
   cout << sha256(a) << endl;
 }
+
