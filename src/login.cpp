@@ -1,12 +1,12 @@
 #include <iostream>
-#include "authlib.h"
+#include <string.h>
 #include <string>
 #include <openssl/sha.h>
 #include <sstream>
 #include <iomanip>
 #include <fstream>
 #include <vector>
-#include <sstream>
+#include "authlib.h"
 
 using namespace std;
 
@@ -18,6 +18,7 @@ vector<array<string, 2>> database;
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
 */
+
 string sha256(const string str)
 {
   unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -31,6 +32,24 @@ string sha256(const string str)
     ss << hex << setw(2) << setfill('0') << (int)hash[i];
   }
   return ss.str();
+}
+
+string userName;
+string psswd;
+
+/**
+ *Function that fulfils the role of interacting with user by taking user input 
+ */
+void usrInput()
+{
+
+  cout << "Enter your username" << endl;
+  cin >> userName;
+
+  cout << "Enter your password" << endl;
+  cin >> psswd;
+
+  sha256(psswd);
 }
 
 // Takes in two string paramaters and compares them
@@ -98,5 +117,7 @@ int main()
   //if (auth) authenticated("user");
   //else rejected("user");
 
-  //cout << sha256("TEST") << endl;
+  usrInput();
+  string a;
+  cout << sha256(a) << endl;
 }
