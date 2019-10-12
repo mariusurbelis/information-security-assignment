@@ -1,5 +1,4 @@
 *.o
 login
 grade.cpp
-
 .vscode/
