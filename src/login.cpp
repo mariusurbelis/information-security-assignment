@@ -9,6 +9,7 @@
 #include "authlib.h"
 
 using namespace std;
+
 const string DB_FILE_NAME = "pwdb.txt";
 vector<array<string, 2>> database;
 string user_name;
@@ -18,7 +19,6 @@ string psswd;
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
 */
-
 string sha256(const string str)
 {
   unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -35,7 +35,7 @@ string sha256(const string str)
 }
 
 /**
- *Function that fulfils the role of interacting with user by taking user input 
+ * Function that fulfils the role of interacting with user by taking user input 
  */
 void usr_input()
 {
