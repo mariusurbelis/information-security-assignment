@@ -9,10 +9,11 @@
 #include "authlib.h"
 
 using namespace std;
-
 const string DB_FILE_NAME = "pwdb.txt";
-
 vector<array<string, 2>> database;
+string user_name;
+string psswd;
+
 
 /**
  * Source of hash function: 
@@ -34,40 +35,18 @@ string sha256(const string str)
   return ss.str();
 }
 
-string userName;
-string psswd;
-
 /**
  *Function that fulfils the role of interacting with user by taking user input 
  */
-void usrInput()
+void usr_input()
 {
-
   cout << "Enter your username" << endl;
-  cin >> userName;
-
+  cin >> user_name;
   cout << "Enter your password" << endl;
   cin >> psswd;
-
-  sha256(psswd);
+  psswd = sha256(psswd);
 }
 
-// Takes in two string paramaters and compares them
-// if both strings are the same, return true. If not, return false
-bool passCompare(string user_input, string stored_pass)
-{
-  // variable x contains an number for the result of the comparison of the two strings
-  // 0 = the same. else = not the same
-  int x = user_input.compare(stored_pass);
-  if (x == 0)
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
 /**
  *  db_parse_line function parses an input string
  *  which contains a username and password split
@@ -88,7 +67,7 @@ void db_parse_line(string line)
   database.push_back({tokens[0], tokens[1]});
 }
 
-int import_cred_db(const string db_file_name)
+void import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
   string db_line;
@@ -96,7 +75,6 @@ int import_cred_db(const string db_file_name)
   {
     while (getline(db_file, db_line))
     {
-      //cout << db_line<<endl;
       db_parse_line(db_line);
     }
     db_file.close();
@@ -104,20 +82,24 @@ int import_cred_db(const string db_file_name)
   else
   {
     cout << "Unable to read password db file" << endl;
-    return 1;
   }
-  return 0;
 }
 
 int main()
 {
   import_cred_db(DB_FILE_NAME);
-  //bool auth = true;
-
-  //if (auth) authenticated("user");
-  //else rejected("user");
-
-  usrInput();
-  string a;
-  cout << sha256(a) << endl;
+  usr_input();
+  for(auto i : database)
+  {
+    if(!i[0].compare(user_name))
+    {
+      cout << i[0] << endl << i[1] << endl << psswd << endl;
+      if (!i[1].compare(psswd)){
+        authenticated(user_name);
+      } else {
+        rejected(user_name);
+      }
+    }
+  }
+  
 }
