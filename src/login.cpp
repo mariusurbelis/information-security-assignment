@@ -7,6 +7,8 @@
 #include <fstream>
 #include <vector>
 #include "authlib.h"
+#include <iterator>
+
 
 using namespace std;
 const string DB_FILE_NAME = "pwdb.txt";
@@ -88,17 +90,16 @@ int main()
 {
   import_cred_db(DB_FILE_NAME);
   usr_input();
-  for(auto const& i : database)
+  for(size_t i = 0; i < database.size()-1; i++)
   {
-    if(!i.compare(user_name))
+    if(!database[i].compare(user_name))
     {
-      cout << i << endl << i << endl << psswd << endl;
-      if (!i.compare(psswd)){
+      cout << database[i] << endl << database[i+1] << endl << psswd << endl;
+      if (!database[i+1].compare(psswd)){
         authenticated(user_name);
       } else {
         rejected(user_name);
       }
     }
   }
-  
 }
