@@ -10,7 +10,7 @@
 
 using namespace std;
 const string DB_FILE_NAME = "pwdb.txt";
-vector<array<string, 2>> database;
+vector<string> database;
 string user_name;
 string psswd;
 
@@ -62,9 +62,8 @@ void db_parse_line(string line)
   string token;
 
   while (getline(tokenStream, token, ':'))
-    tokens.push_back(token);
+    database.push_back(token);
 
-  database.push_back({tokens[0], tokens[1]});
 }
 
 void import_cred_db(const string db_file_name)
@@ -89,12 +88,12 @@ int main()
 {
   import_cred_db(DB_FILE_NAME);
   usr_input();
-  for(auto i : database)
+  for(auto const& i : database)
   {
-    if(!i[0].compare(user_name))
+    if(!i.compare(user_name))
     {
-      cout << i[0] << endl << i[1] << endl << psswd << endl;
-      if (!i[1].compare(psswd)){
+      cout << i << endl << i << endl << psswd << endl;
+      if (!i.compare(psswd)){
         authenticated(user_name);
       } else {
         rejected(user_name);
