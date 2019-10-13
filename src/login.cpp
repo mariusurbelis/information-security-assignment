@@ -14,7 +14,6 @@ vector<array<string, 2>> database;
 string user_name;
 string psswd;
 
-
 /**
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
@@ -89,17 +88,21 @@ int main()
 {
   import_cred_db(DB_FILE_NAME);
   usr_input();
-  for(auto i : database)
+  for (auto i : database)
   {
-    if(!i[0].compare(user_name))
+    if (!i[0].compare(user_name))
     {
-      cout << i[0] << endl << i[1] << endl << psswd << endl;
-      if (!i[1].compare(psswd)){
+      cout << i[0] << endl
+           << i[1] << endl
+           << psswd << endl;
+      if (!i[1].compare(psswd))
+      {
         authenticated(user_name);
-      } else {
+      }
+      else
+      {
         rejected(user_name);
       }
     }
   }
-  
 }
