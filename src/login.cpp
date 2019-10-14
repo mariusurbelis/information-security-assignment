@@ -113,7 +113,9 @@ int main(int argc, char *argv[])
 
   import_cred_db(DB_FILE_NAME);
 
-  // usage
+  /*
+      usage database[0]->username to access the first username
+  */
   cout << database[0]->username << endl;
 
   usr_input();
