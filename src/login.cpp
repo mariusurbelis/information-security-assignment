@@ -87,21 +87,26 @@ void import_cred_db(const string db_file_name)
 int main(int argc, char *argv[])
 {
   import_cred_db(DB_FILE_NAME);
-  usr_input();
-  for (auto i : database)
+  for (int k = 0; k <= 2; k++)
   {
-    if (!i[0].compare(user_name))
+    usr_input();
+    for (auto i : database)
     {
-      cout << i[0] << endl
-           << i[1] << endl
-           << psswd << endl;
-      if (!i[1].compare(psswd))
+      if (!i[0].compare(user_name))
       {
-        authenticated(user_name);
-      }
-      else
-      {
-        rejected(user_name);
+        cout << i[0] << endl
+             << i[1] << endl
+             << psswd << endl;
+
+        if (!i[1].compare(psswd))
+        {
+          authenticated(user_name);
+          return 0;
+        }
+        else
+        {
+          rejected(user_name);
+        }
       }
     }
   }
