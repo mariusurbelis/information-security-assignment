@@ -10,8 +10,14 @@
 
 using namespace std;
 
+struct UserData
+{
+  char *username;
+  char *password;
+};
+
 const string DB_FILE_NAME = "pwdb.txt";
-vector<array<string, 2>> database;
+vector<UserData *> database;
 string user_name;
 string psswd;
 
@@ -57,13 +63,26 @@ void usr_input()
 void db_parse_line(string line)
 {
   istringstream tokenStream(line);
-  vector<string> tokens;
   string token;
 
-  while (getline(tokenStream, token, ':'))
-    tokens.push_back(token);
+  getline(tokenStream, token, ':');
 
-  database.push_back({tokens[0], tokens[1]});
+  char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
+
+  strcpy(username, token.c_str());
+
+  cout << token << " " << token.length() << endl;
+
+  getline(tokenStream, token, ':');
+  char *password = (char *)malloc(sizeof(token));
+
+  strcpy(password, token.c_str());
+
+  UserData *ud = (UserData *)malloc(sizeof(UserData));
+  ud->username = username;
+  ud->password = password;
+
+  database.push_back(ud);
 }
 
 void import_cred_db(const string db_file_name)
@@ -86,8 +105,21 @@ void import_cred_db(const string db_file_name)
 
 int main(int argc, char *argv[])
 {
+  // DEBUG | REMOVES WARNINGS
+  int aaa = argc;
+  string okkkkk = argv[0];
+  aaa++;
+  // ----------------------
+
   import_cred_db(DB_FILE_NAME);
-  for (int k = 0; k <= 2; k++)
+
+  /*
+      usage database[0]->username to access the first username
+  */
+  cout << database[0]->username << endl;
+
+  usr_input();
+  for (auto i : database)
   {
     usr_input();
     for (auto i : database)
@@ -109,5 +141,12 @@ int main(int argc, char *argv[])
         }
       }
     }
+  }
+
+  for (auto i : database)
+  {
+    free(i->username);
+    free(i->password);
+    free(i);
   }
 }
