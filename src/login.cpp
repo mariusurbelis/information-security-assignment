@@ -84,7 +84,7 @@ void import_cred_db(const string db_file_name)
   }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
   import_cred_db(DB_FILE_NAME);
   usr_input();
