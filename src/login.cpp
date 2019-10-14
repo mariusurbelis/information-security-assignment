@@ -134,4 +134,11 @@ int main(int argc, char *argv[])
       }
     }
   }
+
+  for (auto i : database)
+  {
+    free(i->username);
+    free(i->password);
+    free(i);
+  }
 }
