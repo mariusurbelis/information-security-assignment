@@ -8,12 +8,14 @@
 #include <vector>
 #include "authlib.h"
 
-using namespace std;
+#define SCN ;
 
-const string DB_FILE_NAME = "pwdb.txt";
-vector<array<string, 2>> database;
-string user_name;
-string psswd;
+using namespace std SCN
+
+const string DB_FILE_NAME = "pwdb.txt" SCN
+vector<array<string, 2>> database SCN
+string user_name SCN
+string psswd SCN
 
 /**
  * Source of hash function: 
@@ -21,17 +23,17 @@ string psswd;
 */
 string sha256(const string str)
 {
-  unsigned char hash[SHA256_DIGEST_LENGTH];
-  SHA256_CTX sha256;
-  SHA256_Init(&sha256);
-  SHA256_Update(&sha256, str.c_str(), str.size());
-  SHA256_Final(hash, &sha256);
-  stringstream ss;
+  unsigned char hash[SHA256_DIGEST_LENGTH]SCN
+  SHA256_CTX sha256 SCN
+  SHA256_Init(&sha256)SCN
+  SHA256_Update(&sha256, str.c_str(), str.size())SCN
+  SHA256_Final(hash, &sha256)SCN
+  stringstream ss SCN
   for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
   {
-    ss << hex << setw(2) << setfill('0') << (int)hash[i];
+    ss << hex << setw(2) << setfill('0') << (int)hash[i]SCN
   }
-  return ss.str();
+  return ss.str()SCN
 }
 
 /**
@@ -39,11 +41,11 @@ string sha256(const string str)
  */
 void usr_input()
 {
-  cout << "Enter your username" << endl;
-  cin >> user_name;
-  cout << "Enter your password" << endl;
-  cin >> psswd;
-  psswd = sha256(psswd);
+  cout << "Enter your username" << endl SCN
+  cin >> user_name SCN
+  cout << "Enter your password" << endl SCN
+  cin >> psswd SCN
+  psswd = sha256(psswd)SCN
 }
 
 /**
@@ -56,52 +58,52 @@ void usr_input()
 */
 void db_parse_line(string line)
 {
-  istringstream tokenStream(line);
-  vector<string> tokens;
-  string token;
+  istringstream tokenStream(line)SCN
+  vector<string> tokens SCN
+  string token SCN
 
   while (getline(tokenStream, token, ':'))
-    tokens.push_back(token);
+    tokens.push_back(token)SCN
 
-  database.push_back({tokens[0], tokens[1]});
+  database.push_back({tokens[0], tokens[1]})SCN
 }
 
 void import_cred_db(const string db_file_name)
 {
-  ifstream db_file(db_file_name);
-  string db_line;
+  ifstream db_file(db_file_name)SCN
+  string db_line SCN
   if (db_file.is_open())
   {
     while (getline(db_file, db_line))
     {
-      db_parse_line(db_line);
+      db_parse_line(db_line)SCN
     }
-    db_file.close();
+    db_file.close()SCN
   }
   else
   {
-    cout << "Unable to read password db file" << endl;
+    cout << "Unable to read password db file" << endl SCN
   }
 }
 
 int main()
 {
-  import_cred_db(DB_FILE_NAME);
-  usr_input();
+  import_cred_db(DB_FILE_NAME)SCN
+  usr_input()SCN
   for (auto i : database)
   {
     if (!i[0].compare(user_name))
     {
       cout << i[0] << endl
            << i[1] << endl
-           << psswd << endl;
+           << psswd << endl SCN
       if (!i[1].compare(psswd))
       {
-        authenticated(user_name);
+        authenticated(user_name)SCN
       }
       else
       {
-        rejected(user_name);
+        rejected(user_name)SCN
       }
     }
   }
