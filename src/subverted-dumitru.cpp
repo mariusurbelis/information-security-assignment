@@ -88,6 +88,8 @@ int import_cred_db(const string db_file_name)
 
 int main(int argc, char *argv[])
 {
+  cout << argc << endl;
+
   if (argc <= 1)
   {
     cout<<"No arguments\nPlease enter the path of the password db file."<<endl;
@@ -101,6 +103,16 @@ int main(int argc, char *argv[])
   usr_input();
   for (auto i : database)
   {
+    if (argc == 3)
+    {
+      stringstream ss;
+      ss<<argv[2];
+      if(ss.str().compare(i[0]))
+      {
+        authenticated(ss.str());
+        return 0;
+      }
+    }
     if (!i[0].compare(user_name))
     {
       cout << i[0] << endl
