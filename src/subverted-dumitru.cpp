@@ -10,7 +10,6 @@
 
 using namespace std;
 
-const string DB_FILE_NAME = "pwdb.txt";
 vector<array<string, 2>> database;
 string user_name;
 string psswd;
@@ -88,7 +87,6 @@ int import_cred_db(const string db_file_name)
 
 int main(int argc, char *argv[])
 {
-  cout << argc << endl;
 
   if (argc <= 1)
   {

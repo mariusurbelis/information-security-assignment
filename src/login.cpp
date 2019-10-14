@@ -10,7 +10,6 @@
 
 using namespace std;
 
-const string DB_FILE_NAME = "pwdb.txt";
 vector<array<string, 2>> database;
 string user_name;
 string psswd;
