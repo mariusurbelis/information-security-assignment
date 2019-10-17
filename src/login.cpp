@@ -110,16 +110,15 @@ int main(int argc, char *argv[])
   import_cred_db(DB_FILE_NAME);
   for (int k = 0; k <= 2; k++)
   {
-    usr_input();
     for (auto i : database)
     {
-      if (!i[0].compare(user_name))
+      if (!strcmp(i->username, user_name.c_str()))
       {
-        cout << i[0] << endl
-             << i[1] << endl
+        cout << i->username << endl
+             << i->password<< endl
              << psswd << endl;
 
-        if (!i[1].compare(psswd))
+        if (!strcmp(i->password, psswd.c_str()))
         {
           authenticated(user_name);
           return 0;
@@ -127,15 +126,19 @@ int main(int argc, char *argv[])
         else
         {
           rejected(user_name);
+          EXIT_FAILURE;
+          }
+          
         }
       }
-    }
+    
   }
 
-  for (auto i : database)
-  {
-    free(i->username);
-    free(i->password);
-    free(i);
-  }
+//   for (auto i : database)
+//   {
+//     free(i->username);
+//     free(i->password);
+//     free(i);
+//   }
+// }
 }
