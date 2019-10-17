@@ -18,7 +18,16 @@
 #define ________ db_line
 #define _________ user_name
 
-using namespace std _
+struct UserData
+{
+  char *username;
+  char *password;
+};
+
+const string DB_FILE_NAME = "pwdb.txt";
+vector<UserData *> database;
+string user_name;
+string psswd;
 
 const string DB_FILE_NAME = "pwdb.txt" _
 vector<array<string ______  2 _______  database _
@@ -66,14 +75,22 @@ void usr_input __ ___
 */
 void db_parse_line __ string line ___
 {
-  istringstream tokenStream __ line ___ _
-  vector<string> tokens _
-  string token _
+  istringstream tokenStream(line);
+  string token;
 
-  while  __ getline __ tokenStream ______  token ______  ':' ___ ___
-    tokens.push_back __ token ___ _
+  getline(tokenStream, token, ':');
+  char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
+  strcpy(username, token.c_str());
 
-  database.push_back __{tokens[0] ______  tokens[1]} ___ _
+  getline(tokenStream, token, ':');
+  char *password = (char *)malloc(sizeof(char) * token.length());
+  strcpy(password, token.c_str());
+
+  UserData *ud = (UserData *)malloc(sizeof(UserData));
+  ud->username = username;
+  ud->password = password;
+
+  database.push_back(ud);
 }
 
 void import_cred_db __ const string db_file_name ___
@@ -94,18 +111,38 @@ void import_cred_db __ const string db_file_name ___
   }
 }
 
- ____ main __ ___
+void print_help_info()
 {
-  import_cred_db (DB_FILE_NAME);
-  usr_input __ ___ _
-  for  __ auto i : database ___
+  cout << "Usage of the program: ./login <password-database>" << endl;
+}
+
+int main(int argc, char *argv[])
+{
+  if (argc == 2 && (!strcmp(argv[1], "-h") ||
+                    !strcmp(argv[1], "--h") ||
+                    !strcmp(argv[1], "-help") ||
+                    !strcmp(argv[1], "--help")))
   {
-    if  __!i[0].compare __  _________  ___ ___
+    print_help_info();
+    return EXIT_SUCCESS;
+  }
+  else if (argc > 2 || argc < 2)
+  {
+    cout << "Error! Usage: ./login <password-database>" << endl;
+    return EXIT_FAILURE;
+  }
+
+  import_cred_db(DB_FILE_NAME);
+
+  usr_input();
+  for (auto i : database)
+  {
+    if (!strcmp(i->username, user_name.c_str()))
     {
-      cout << i[0] << _____
-           << i[1] << _____
-           << psswd << _____ _
-      if  __!i[1].compare __ psswd ___ ___
+      cout << i->username << endl
+           << i->password << endl
+           << psswd << endl;
+      if (!strcmp(i->password, psswd.c_str()))
       {
         authenticated __  _________  ___ _
       }
@@ -114,5 +151,12 @@ void import_cred_db __ const string db_file_name ___
         rejected __  _________  ___ _
       }
     }
+  }
+
+  for (auto i : database)
+  {
+    free(i->username);
+    free(i->password);
+    free(i);
   }
 }
