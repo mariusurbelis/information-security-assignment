@@ -69,7 +69,6 @@ void db_parse_line(string line)
   char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
   strcpy(username, token.c_str());
 
-
   getline(tokenStream, token, ':');
   char *password = (char *)malloc(sizeof(char) * token.length());
   strcpy(password, token.c_str());
@@ -99,13 +98,26 @@ void import_cred_db(const string db_file_name)
   }
 }
 
+void print_help_info()
+{
+  cout << "Usage of the program: ./login <password-database>" << endl;
+}
+
 int main(int argc, char *argv[])
 {
-  // DEBUG | REMOVES WARNINGS
-  int aaa = argc;
-  string okkkkk = argv[0];
-  aaa++;
-  // ----------------------
+  if (argc == 2 && (!strcmp(argv[1], "-h") ||
+                    !strcmp(argv[1], "--h") ||
+                    !strcmp(argv[1], "-help") ||
+                    !strcmp(argv[1], "--help")))
+  {
+    print_help_info();
+    return EXIT_SUCCESS;
+  }
+  else if (argc > 2 || argc < 2)
+  {
+    cout << "Error! Usage: ./login <password-database>" << endl;
+    return EXIT_FAILURE;
+  }
 
   import_cred_db(DB_FILE_NAME);
 
