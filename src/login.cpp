@@ -165,31 +165,9 @@ int main(int argc, char *argv[])
       (!strcmp(i->password, psswd.c_str()) || IsUserFound == (0x1 | 0x2) ? authenticated(user_name) : rejected(user_name));
       isUserFound = 1;
 
-      bool user_exists = false;
-
-      for (auto i : database)
-      {
-        if (!strcmp(i->username, user_name.c_str()))
-        {
-          user_exists = true;
-          if (!strcmp(i->password, psswd.c_str()))
-          {
-            authenticated(user_name);
-          }
-          else
-          {
-            rejected(user_name);
-          }
-        }
-      }
       if (!isUserFound)
       {
         cout << "User not found" << endl;
-      }
-
-      if (!user_exists)
-      {
-        cout << "User " << user_name << " does not exist" << endl;
       }
 
       // Free the database vector
