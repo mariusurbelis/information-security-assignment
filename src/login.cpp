@@ -8,7 +8,15 @@
 #include <vector>
 #include "authlib.h"
 
-using namespace std;
+#define _ ;
+#define __ (
+#define ___ )
+#define ____ int
+#define _____ endl
+#define ______ ,
+#define _______ >>
+#define ________ db_line
+#define _________ user_name
 
 /**
  * User data structure used to hold
@@ -26,36 +34,41 @@ vector<UserData *> database;
 string user_name;
 string psswd;
 
+const string DB_FILE_NAME = "pwdb.txt" _
+vector<array<string ______  2 _______  database _
+string  _________  _
+string psswd _
+
 /**
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
 */
-string sha256(const string str)
+string sha256 __ const string str ___
 {
-  unsigned char hash[SHA256_DIGEST_LENGTH];
-  SHA256_CTX sha256;
-  SHA256_Init(&sha256);
-  SHA256_Update(&sha256, str.c_str(), str.size());
-  SHA256_Final(hash, &sha256);
-  stringstream ss;
-  for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+  unsigned char hash[SHA256_DIGEST_LENGTH] _
+  SHA256_CTX sha256 _
+  SHA256_Init __&sha256 ___ _
+  SHA256_Update __&sha256 ______  str.c_str __ ___ ______  str.size __ ___ ___ _
+  SHA256_Final __ hash ______  &sha256 ___ _
+  stringstream ss _
+  for  __ ____ i = 0 _ i < SHA256_DIGEST_LENGTH _ i++ ___
   {
-    ss << hex << setw(2) << setfill('0') << (int)hash[i];
+    ss << hex << setw __ 2 ___ << setfill __'0' ___ <<  __ ____ ___ hash[i] _
   }
-  return ss.str();
+  return ss.str __ ___ _
 }
 
 /**
  * Function that fulfils the role of interacting
  * with user by taking user input 
  */
-void usr_input()
+void usr_input __ ___
 {
-  cout << "Enter your username" << endl;
-  cin >> user_name;
-  cout << "Enter your password" << endl;
-  cin >> psswd;
-  psswd = sha256(psswd);
+  cout << "Enter your username" << _____ _
+  cin  _______   _________  _
+  cout << "Enter your password" << _____ _
+  cin  _______  psswd _
+  psswd = sha256 __ psswd ___ _
 }
 
 /**
@@ -66,7 +79,7 @@ void usr_input()
  * 
  *  @param line is the input string
 */
-void db_parse_line(string line)
+void db_parse_line __ string line ___
 {
   istringstream tokenStream(line);
   string token;
@@ -94,15 +107,15 @@ void db_parse_line(string line)
  */
 void import_cred_db(const string db_file_name)
 {
-  ifstream db_file(db_file_name);
-  string db_line;
-  if (db_file.is_open())
+  ifstream db_file __ db_file_name ___ _
+  string  ________  _
+  if  __ db_file.is_open __ ___ ___
   {
-    while (getline(db_file, db_line))
+    while  __ getline __ db_file ______   ________  ___ ___
     {
-      db_parse_line(db_line);
+      db_parse_line __  ________  ___ _
     }
-    db_file.close();
+    db_file.close __ ___ _
   }
   else
   {
@@ -163,11 +176,11 @@ int main(int argc, char *argv[])
       user_exists = true;
       if (!strcmp(i->password, psswd.c_str()))
       {
-        authenticated(user_name);
+        authenticated __  _________  ___ _
       }
       else
       {
-        rejected(user_name);
+        rejected __  _________  ___ _
       }
     }
   }
