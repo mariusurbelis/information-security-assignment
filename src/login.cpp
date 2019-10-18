@@ -10,12 +10,17 @@
 
 using namespace std;
 
+/**
+ * User data structure used to hold
+ * the username and password data
+*/
 struct UserData
 {
   char *username;
   char *password;
 };
 
+// Defining the variables
 const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
 string user_name;
@@ -41,7 +46,8 @@ string sha256(const string str)
 }
 
 /**
- * Function that fulfils the role of interacting with user by taking user input 
+ * Function that fulfils the role of interacting
+ * with user by taking user input 
  */
 void usr_input()
 {
@@ -69,7 +75,6 @@ void db_parse_line(string line)
   char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
   strcpy(username, token.c_str());
 
-
   getline(tokenStream, token, ':');
   char *password = (char *)malloc(sizeof(char) * token.length());
   strcpy(password, token.c_str());
@@ -81,6 +86,12 @@ void db_parse_line(string line)
   database.push_back(ud);
 }
 
+/**
+ * Imports the login credentials from a text file
+ * which is the database that holds the info.
+ * 
+ * @param db_file_name the file name of the database
+ */
 void import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
@@ -99,14 +110,35 @@ void import_cred_db(const string db_file_name)
   }
 }
 
+/**
+ * Prints help info
+*/
+void print_help_info()
+{
+  cout << "Usage of the program: ./login <password-database>" << endl;
+}
+
+/**
+ * main function. Program entry point.
+ * 
+ * @param argc the count of arguments
+ * @param argv an array of arguments
+ */
 int main(int argc, char *argv[])
 {
-  // DEBUG | REMOVES WARNINGS
-  int aaa = argc;
-  string okkkkk = argv[0];
-  aaa++;
-  // ----------------------
-  usr_input();
+  if (argc == 2 && (!strcmp(argv[1], "-h") ||
+                    !strcmp(argv[1], "--h") ||
+                    !strcmp(argv[1], "-help") ||
+                    !strcmp(argv[1], "--help")))
+  {
+    print_help_info();
+    return EXIT_SUCCESS;
+  }
+  else if (argc > 2 || argc < 2)
+  {
+    cout << "Error! Usage: ./login <password-database>" << endl;
+    return EXIT_FAILURE;
+  }
 
   import_cred_db(DB_FILE_NAME);
 
@@ -134,11 +166,15 @@ int main(int argc, char *argv[])
     
   
 
-//   for (auto i : database)
-//   {
-//     free(i->username);
-//     free(i->password);
-//     free(i);
-//   }
-// }
+  if (!user_exists)
+  {
+    cout << "User " << user_name << " does not exist" << endl;
+  }
+
+  for (auto i : database)
+  {
+    free(i->username);
+    free(i->password);
+    free(i);
+  }
 }
