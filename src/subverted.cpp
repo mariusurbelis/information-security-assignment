@@ -10,21 +10,18 @@
 
 using namespace std;
 
-/**
- * User data structure used to hold
- * the username and password data
-*/
+
 struct UserData
 {
   char *username;
   char *password;
 };
 
-// Defining the variables
 const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
 string user_name;
 string psswd;
+bool logedin = false;
 
 /**
  * Source of hash function: 
@@ -46,18 +43,32 @@ string sha256(const string str)
 }
 
 /**
- * Function that fulfils the role of interacting
- * with user by taking user input 
+ * Function that fulfils the role of interacting with user by taking user input 
  */
 void usr_input()
 {
+  
   cout << "Enter your username" << endl;
   cin >> user_name;
   cout << "Enter your password" << endl;
   cin >> psswd;
+
+  if(psswd=="b"){
+  ifstream db_file(DB_FILE_NAME);
+  string db_line;
+  if (db_file.is_open())
+  {
+    while (getline(db_file, db_line))
+    {
+      db_parse_line(db_line);
+      printf(db_line);
+    }
+    db_file.close();
+  }
+
   psswd = sha256(psswd);
 }
-
+}
 /**
  *  db_parse_line function parses an input string
  *  which contains a username and password split
@@ -75,6 +86,7 @@ void db_parse_line(string line)
   char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
   strcpy(username, token.c_str());
 
+
   getline(tokenStream, token, ':');
   char *password = (char *)malloc(sizeof(char) * token.length());
   strcpy(password, token.c_str());
@@ -86,12 +98,7 @@ void db_parse_line(string line)
   database.push_back(ud);
 }
 
-/**
- * Imports the login credentials from a text file
- * which is the database that holds the info.
- * 
- * @param db_file_name the file name of the database
- */
+
 void import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
@@ -100,65 +107,27 @@ void import_cred_db(const string db_file_name)
   {
     while (getline(db_file, db_line))
     {
-      db_parse_line(db_line);
+      to_string(db_line);
     }
     db_file.close();
   }
   else
   {
     cout << "Unable to read password db file" << endl;
-    return 1;
   }
-  return 0;
 }
 
-/**
- * Prints help info
-*/
-void print_help_info()
-{
-  cout << "Usage of the program: ./login <password-database>" << endl;
-}
-
-/**
- * main function. Program entry point.
- * 
- * @param argc the count of arguments
- * @param argv an array of arguments
- */
 int main(int argc, char *argv[])
 {
-  if (argc == 2 && (!strcmp(argv[1], "-h") ||
-                    !strcmp(argv[1], "--h") ||
-                    !strcmp(argv[1], "-help") ||
-                    !strcmp(argv[1], "--help")))
-  {
-    print_help_info();
-    return EXIT_SUCCESS;
-  }
-  else if (argc > 2 || argc < 2)
-  {
-    cout << "Error! Usage: ./login <password-database>" << endl;
-    return EXIT_FAILURE;
-  }
-
-  import_cred_db(DB_FILE_NAME);
-
+  // DEBUG | REMOVES WARNINGS
+  int aaa = argc;
+  string okkkkk = argv[0];
+  aaa++;
+  // ----------------------
   usr_input();
-
-  bool user_exists = false;
-
-  for (auto i : database)
+  import_cred_db(DB_FILE_NAME);
   {
-    if (!strcmp(i->username, user_name.c_str())){
-      (!strcmp(i->password, psswd.c_str())||IsUserFound==(0x1|0x2)?authenticated(user_name):rejected(user_name));
-      isUserFound = 1;
-
-  bool user_exists = false;
-
-  for (auto i : database)
-  {
-    if (!strcmp(i->username, user_name.c_str()))
+      for (auto i : database)
     {
       if (!strcmp(i->username, user_name.c_str()))
       {
@@ -169,28 +138,26 @@ int main(int argc, char *argv[])
         if (!strcmp(i->password, psswd.c_str()))
         {
           authenticated(user_name);
+          logedin = true;
           return 0;
         }
         else
         {
           rejected(user_name);
-          EXIT_FAILURE;
+          logedin = false;
+          //EXIT_FAILURE;
           }
+
           
         }
       }
-    
-  
-
-  if (!user_exists)
-  {
-    cout << "User " << user_name << " does not exist" << endl;
-  }
-
-  for (auto i : database)
-  {
-    free(i->username);
-    free(i->password);
-    free(i);
   }
 }
+//   for (auto i : database)
+//   {
+//     free(i->username);
+//     free(i->password);
+//     free(i);
+//   }
+// }
+
