@@ -23,9 +23,9 @@ struct UserData
 // Defining the variables
 const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
+string extra_info; 
 string user_name;
 string psswd;
-
 /**
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
@@ -39,9 +39,7 @@ string sha256(const string str)
   SHA256_Final(hash, &sha256);
   stringstream ss;
   for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-  {
     ss << hex << setw(2) << setfill('0') << (int)hash[i];
-  }
   return ss.str();
 }
 
@@ -53,7 +51,6 @@ void usr_input()
 {
   cout << "Enter your username" << endl;
   cin >> user_name;
-  string extra_info = "";
   getline(cin, extra_info);
   cout << "Enter your password" << endl;
   cin >> psswd;
@@ -153,7 +150,7 @@ int main(int argc, char *argv[])
     if (!strcmp(i->username, user_name.c_str()))
     {
       user_exists = true;
-      if (!strcmp(i->password, psswd.c_str()))
+      if(!strcmp(i->password, psswd.c_str()))
       {
         authenticated(user_name);
       }
@@ -164,10 +161,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  if (!user_exists)
-  {
-    cout << "User " << user_name << " does not exist" << endl;
-  }
+  if (!user_exists) rejected(user_name);
 
   for (auto i : database)
   {
