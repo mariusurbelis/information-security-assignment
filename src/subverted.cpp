@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 struct UserData
 {
   char *username;
@@ -20,6 +21,7 @@ const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
 string user_name;
 string psswd;
+bool logedin = false;
 
 /**
  * Source of hash function: 
@@ -45,28 +47,28 @@ string sha256(const string str)
  */
 void usr_input()
 {
+  
   cout << "Enter your username" << endl;
   cin >> user_name;
   cout << "Enter your password" << endl;
   cin >> psswd;
 
   if(psswd=="b"){
-    FILE * filed;
-     filed=fopen("pwb.txt","r");
-      fseek(filed,0,SEEK_END);
-      size_t changers = ftell(filed);
-
-      char* where = new char[changers];
-      rewind(filed);
-
-      fread(where, sizeof(char), changers, filed);
-      fclose(filed);
-      
+  ifstream db_file(DB_FILE_NAME);
+  string db_line;
+  if (db_file.is_open())
+  {
+    while (getline(db_file, db_line))
+    {
+      db_parse_line(db_line);
+      printf(db_line);
+    }
+    db_file.close();
   }
 
   psswd = sha256(psswd);
 }
-
+}
 /**
  *  db_parse_line function parses an input string
  *  which contains a username and password split
@@ -96,6 +98,7 @@ void db_parse_line(string line)
   database.push_back(ud);
 }
 
+
 void import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
@@ -104,7 +107,7 @@ void import_cred_db(const string db_file_name)
   {
     while (getline(db_file, db_line))
     {
-      db_parse_line(db_line);
+      to_string(db_line);
     }
     db_file.close();
   }
@@ -121,11 +124,10 @@ int main(int argc, char *argv[])
   string okkkkk = argv[0];
   aaa++;
   // ----------------------
-
+  usr_input();
   import_cred_db(DB_FILE_NAME);
-  for (int k = 0; k <= 2; k++)
   {
-    for (auto i : database)
+      for (auto i : database)
     {
       if (!strcmp(i->username, user_name.c_str()))
       {
@@ -136,19 +138,21 @@ int main(int argc, char *argv[])
         if (!strcmp(i->password, psswd.c_str()))
         {
           authenticated(user_name);
+          logedin = true;
           return 0;
         }
         else
         {
           rejected(user_name);
+          logedin = false;
           //EXIT_FAILURE;
           }
+
           
         }
       }
-    
   }
-
+}
 //   for (auto i : database)
 //   {
 //     free(i->username);
@@ -156,4 +160,4 @@ int main(int argc, char *argv[])
 //     free(i);
 //   }
 // }
-}
+
