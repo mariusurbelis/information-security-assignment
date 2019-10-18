@@ -14,17 +14,17 @@
 using namespace std;
 
 /**
- * struct UserData used to store username and password 
- */
+ * User data structure used to hold
+ * the username and password data
+*/
 struct UserData
 {
   char *username;
   char *password;
 };
 
-/**
- * database file name 
- */ 
+
+// Defining the variables
 const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
 string user_name;
@@ -50,7 +50,8 @@ string sha256(const string str)
 }
 
 /**
- * Function that fulfils the role of interacting with user by taking user input 
+ * Function that fulfils the role of interacting
+ * with user by taking user input 
  */
 void usr_input()
 {
@@ -78,7 +79,6 @@ void db_parse_line(string line)
   char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
   strcpy(username, token.c_str());
 
-
   getline(tokenStream, token, ':');
   char *password = (char *)malloc(sizeof(char) * token.length());
   strcpy(password, token.c_str());
@@ -91,7 +91,10 @@ void db_parse_line(string line)
 }
 
 /**
- * Import credentials from database
+ * Imports the login credentials from a text file
+ * which is the database that holds the info.
+ * 
+ * @param db_file_name the file name of the database
  */
 bool import_cred_db(const string db_file_name)
 {
@@ -118,6 +121,12 @@ void print_help_info()
   cout << "Usage of the program: ./login <password-database>" << endl;
 }
 
+/**
+ * main function. Program entry point.
+ * 
+ * @param argc the count of arguments
+ * @param argv an array of arguments
+ */
 int main(int argc, char* argv[])
 {
   if(argc > 1){
@@ -133,6 +142,7 @@ int main(int argc, char* argv[])
       return EXIT_SUCCESS;
     }
   }else{
+
     cout << "Error! Usage: ./login <password-database>" << endl;
     return EXIT_FAILURE;
   }
@@ -153,15 +163,34 @@ int main(int argc, char* argv[])
     if (!strcmp(i->username, user_name.c_str())){
       (!strcmp(i->password, psswd.c_str())||IsUserFound==(0x1|0x2)?authenticated(user_name):rejected(user_name));
       isUserFound = 1;
+
+  bool user_exists = false;
+
+  for (auto i : database)
+  {
+    if (!strcmp(i->username, user_name.c_str()))
+    {
+      user_exists = true;
+      if (!strcmp(i->password, psswd.c_str()))
+      {
+        authenticated(user_name);
+      }
+      else
+      {
+        rejected(user_name);
+      }
     }
   }
   if(!isUserFound){
     cout<<"User not found"<<endl;
   }
 
-  /**
-  * Free the database vector
-  */
+  if (!user_exists)
+  {
+    cout << "User " << user_name << " does not exist" << endl;
+  }
+
+  // Free the database vector
   for (auto i : database)
   {
     free(i->username);
