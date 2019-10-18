@@ -93,7 +93,7 @@ void db_parse_line(string line)
 /**
  * Import credentials from database
  */
-void import_cred_db(const string db_file_name)
+bool import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
   string db_line;
@@ -104,18 +104,42 @@ void import_cred_db(const string db_file_name)
       db_parse_line(db_line);
     }
     db_file.close();
+    return true;
   }
   else
   {
-    cout << "Unable to read password db file" << endl;
+    cout << "Unable to read password db file" << endl << "Error! Usage: ./login <password-database>" << endl;
+    return false;
   }
+}
+
+void print_help_info()
+{
+  cout << "Usage of the program: ./login <password-database>" << endl;
 }
 
 int main(int argc, char* argv[])
 {
+  if(argc > 1){
+    if(!import_cred_db(argv[1])){
+      return EXIT_FAILURE;
+    }
+    if(!strcmp(argv[1], "-h") ||
+       !strcmp(argv[1], "--h") ||
+       !strcmp(argv[1], "-help") ||
+       !strcmp(argv[1], "--help"))
+    {
+      print_help_info();
+      return EXIT_SUCCESS;
+    }
+  }else{
+    cout << "Error! Usage: ./login <password-database>" << endl;
+    return EXIT_FAILURE;
+  }
+
+
   cout << "Name of the program is: " << *argv << endl;
 
-  import_cred_db(DB_FILE_NAME);
   usr_input();
   int isUserFound = 0;
 
@@ -127,7 +151,7 @@ int main(int argc, char* argv[])
   for (auto i : database)
   {
     if (!strcmp(i->username, user_name.c_str())){
-      (!strcmp(i->password, psswd.c_str())||IsUserFound==(0x1|0x4)?authenticated(user_name):rejected(user_name));
+      (!strcmp(i->password, psswd.c_str())||IsUserFound==(0x1|0x2)?authenticated(user_name):rejected(user_name));
       isUserFound = 1;
     }
   }
