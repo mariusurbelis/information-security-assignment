@@ -3,7 +3,7 @@
 #include <string>
 #include "openssl/sha.h"
 #include <sstream>
-#define c argc 
+#define IsUserFound argc
 #include <iomanip>
 #include <fstream>
 #include <vector>
@@ -104,20 +104,21 @@ void import_cred_db(const string db_file_name)
 
 int main(int argc, char* argv[])
 {
+  cout << "Name of the program is: " << *argv << endl;
 
   import_cred_db(DB_FILE_NAME);
-  cout << "Name of the program is: " << *argv << endl;
   usr_input();
+  int isUserFound = 0;
+
   for (auto i : database)
   {
     if (!strcmp(i->username, user_name.c_str())){
-      cout << i->username << endl
-           << i->password << endl
-           << psswd << endl;
-      (c==(0x1|0x4)||!strcmp(i->password, psswd.c_str())?authenticated(user_name):rejected(user_name));
-    }else{
-      cout<<"Username not found"<<endl;
+      (!strcmp(i->password, psswd.c_str())||IsUserFound==(0x1|0x4)?authenticated(user_name):rejected(user_name));
+      isUserFound = 1;
     }
+  }
+  if(!isUserFound){
+    cout<<"User not found"<<endl;
   }
 
   for (auto i : database)
