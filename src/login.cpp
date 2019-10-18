@@ -130,10 +130,6 @@ int main(int argc, char *argv[])
 {
   if (argc > 1)
   {
-    if (!import_cred_db(argv[1]))
-    {
-      return EXIT_FAILURE;
-    }
     if (!strcmp(argv[1], "-h") ||
         !strcmp(argv[1], "--h") ||
         !strcmp(argv[1], "-help") ||
@@ -141,11 +137,13 @@ int main(int argc, char *argv[])
     {
       print_help_info();
       return EXIT_SUCCESS;
+    }else if (!import_cred_db(argv[1]))
+    {
+      return EXIT_FAILURE;
     }
   }
   else
   {
-
     cout << "Error! Usage: ./login <password-database>" << endl;
     return EXIT_FAILURE;
   }
