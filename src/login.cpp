@@ -10,12 +10,17 @@
 
 using namespace std;
 
+/**
+ * User data structure used to hold
+ * the username and password data
+*/
 struct UserData
 {
   char *username;
   char *password;
 };
 
+// Defining the variables
 const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
 string user_name;
@@ -41,7 +46,8 @@ string sha256(const string str)
 }
 
 /**
- * Function that fulfils the role of interacting with user by taking user input 
+ * Function that fulfils the role of interacting
+ * with user by taking user input 
  */
 void usr_input()
 {
@@ -98,6 +104,9 @@ void import_cred_db(const string db_file_name)
   }
 }
 
+/**
+ * Prints help info
+*/
 void print_help_info()
 {
   cout << "Usage of the program: ./login <password-database>" << endl;
