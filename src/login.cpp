@@ -86,6 +86,12 @@ void db_parse_line(string line)
   database.push_back(ud);
 }
 
+/**
+ * Imports the login credentials from a text file
+ * which is the database that holds the info.
+ * 
+ * @param db_file_name the file name of the database
+ */
 void import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
