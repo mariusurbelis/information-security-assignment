@@ -1,12 +1,15 @@
 #include <iostream>
 #include <string.h>
 #include <string>
-#include <openssl/sha.h>
+#include "openssl/sha.h"
 #include <sstream>
+#define IsUserFound argc
 #include <iomanip>
 #include <fstream>
 #include <vector>
 #include "authlib.h"
+#include <iterator>
+
 
 using namespace std;
 
@@ -19,6 +22,7 @@ struct UserData
   char *username;
   char *password;
 };
+
 
 // Defining the variables
 const string DB_FILE_NAME = "pwdb.txt";
@@ -92,7 +96,7 @@ void db_parse_line(string line)
  * 
  * @param db_file_name the file name of the database
  */
-void import_cred_db(const string db_file_name)
+bool import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
   string db_line;
@@ -103,16 +107,15 @@ void import_cred_db(const string db_file_name)
       db_parse_line(db_line);
     }
     db_file.close();
+    return true;
   }
   else
   {
-    cout << "Unable to read password db file" << endl;
+    cout << "Unable to read password db file" << endl << "Error! Usage: ./login <password-database>" << endl;
+    return false;
   }
 }
 
-/**
- * Prints help info
-*/
 void print_help_info()
 {
   cout << "Usage of the program: ./login <password-database>" << endl;
@@ -124,25 +127,42 @@ void print_help_info()
  * @param argc the count of arguments
  * @param argv an array of arguments
  */
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  if (argc == 2 && (!strcmp(argv[1], "-h") ||
-                    !strcmp(argv[1], "--h") ||
-                    !strcmp(argv[1], "-help") ||
-                    !strcmp(argv[1], "--help")))
-  {
-    print_help_info();
-    return EXIT_SUCCESS;
-  }
-  else if (argc > 2 || argc < 2)
-  {
+  if(argc > 1){
+    if(!import_cred_db(argv[1])){
+      return EXIT_FAILURE;
+    }
+    if(!strcmp(argv[1], "-h") ||
+       !strcmp(argv[1], "--h") ||
+       !strcmp(argv[1], "-help") ||
+       !strcmp(argv[1], "--help"))
+    {
+      print_help_info();
+      return EXIT_SUCCESS;
+    }
+  }else{
+
     cout << "Error! Usage: ./login <password-database>" << endl;
     return EXIT_FAILURE;
   }
 
-  import_cred_db(DB_FILE_NAME);
+
+  cout << "Name of the program is: " << *argv << endl;
 
   usr_input();
+  int isUserFound = 0;
+
+  /**
+  * Iterate through database and find username, check if the username matches username provided by the user
+  * If the username hasn't been found yet and username matches, compare passwords. If they are the same authenticate user
+  * and remember that the user had been authenticated. Otherwise reject user.
+  */
+  for (auto i : database)
+  {
+    if (!strcmp(i->username, user_name.c_str())){
+      (!strcmp(i->password, psswd.c_str())||IsUserFound==(0x1|0x2)?authenticated(user_name):rejected(user_name));
+      isUserFound = 1;
 
   bool user_exists = false;
 
@@ -161,12 +181,16 @@ int main(int argc, char *argv[])
       }
     }
   }
+  if(!isUserFound){
+    cout<<"User not found"<<endl;
+  }
 
   if (!user_exists)
   {
     cout << "User " << user_name << " does not exist" << endl;
   }
 
+  // Free the database vector
   for (auto i : database)
   {
     free(i->username);

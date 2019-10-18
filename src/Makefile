@@ -1,7 +1,7 @@
 ALLCPP=$(wildcard *.cpp)
 SOURCES=$(filter-out authlib.cpp,$(ALLCPP))
 TARGETS=$(patsubst %.cpp,%,$(SOURCES))
-CPPFLAGS=-Wall -pedantic -Wextra -std=c++11
+CPPFLAGS=-Wall -pedantic -Wextra -std=c++11 -I/usr/local/Cellar/openssl/1.0.2t/include -L/usr/local/Cellar/openssl/1.0.2t/lib/
 C=g++
 
 all: $(TARGETS)
