@@ -13,12 +13,18 @@
 
 using namespace std;
 
+/**
+ * struct UserData used to store username and password 
+ */
 struct UserData
 {
   char *username;
   char *password;
 };
 
+/**
+ * database file name 
+ */ 
 const string DB_FILE_NAME = "pwdb.txt";
 vector<UserData *> database;
 string user_name;
@@ -84,6 +90,9 @@ void db_parse_line(string line)
   database.push_back(ud);
 }
 
+/**
+ * Import credentials from database
+ */
 void import_cred_db(const string db_file_name)
 {
   ifstream db_file(db_file_name);
@@ -110,6 +119,11 @@ int main(int argc, char* argv[])
   usr_input();
   int isUserFound = 0;
 
+  /**
+  * Iterate through database and find username, check if the username matches username provided by the user
+  * If the username hasn't been found yet and username matches, compare passwords. If they are the same authenticate user
+  * and remember that the user had been authenticated. Otherwise reject user.
+  */
   for (auto i : database)
   {
     if (!strcmp(i->username, user_name.c_str())){
@@ -121,6 +135,9 @@ int main(int argc, char* argv[])
     cout<<"User not found"<<endl;
   }
 
+  /**
+  * Free the database vector
+  */
   for (auto i : database)
   {
     free(i->username);
