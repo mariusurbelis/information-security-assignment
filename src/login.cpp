@@ -118,6 +118,12 @@ void print_help_info()
   cout << "Usage of the program: ./login <password-database>" << endl;
 }
 
+/**
+ * main function. Program entry point.
+ * 
+ * @param argc the count of arguments
+ * @param argv an array of arguments
+ */
 int main(int argc, char *argv[])
 {
   if (argc == 2 && (!strcmp(argv[1], "-h") ||
@@ -137,13 +143,14 @@ int main(int argc, char *argv[])
   import_cred_db(DB_FILE_NAME);
 
   usr_input();
+
+  bool user_exists = false;
+
   for (auto i : database)
   {
     if (!strcmp(i->username, user_name.c_str()))
     {
-      cout << i->username << endl
-           << i->password << endl
-           << psswd << endl;
+      user_exists = true;
       if (!strcmp(i->password, psswd.c_str()))
       {
         authenticated(user_name);
@@ -153,6 +160,11 @@ int main(int argc, char *argv[])
         rejected(user_name);
       }
     }
+  }
+
+  if (!user_exists)
+  {
+    cout << "User " << user_name << " does not exist" << endl;
   }
 
   for (auto i : database)
