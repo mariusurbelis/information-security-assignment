@@ -106,10 +106,10 @@ int main(int argc, char *argv[])
   string okkkkk = argv[0];
   aaa++;
   // ----------------------
+  usr_input();
 
   import_cred_db(DB_FILE_NAME);
-  for (int k = 0; k <= 2; k++)
-  {
+
     for (auto i : database)
     {
       if (!strcmp(i->username, user_name.c_str()))
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
         }
       }
     
-  }
+  
 
 //   for (auto i : database)
 //   {
