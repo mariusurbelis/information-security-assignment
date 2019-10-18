@@ -127,7 +127,7 @@ void print_help_info()
  * @param argc the count of arguments
  * @param argv an array of arguments
  */
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
   if(argc > 1){
     if(!import_cred_db(argv[1])){
@@ -151,13 +151,9 @@ int main(int argc, char* argv[])
   cout << "Name of the program is: " << *argv << endl;
 
   usr_input();
-  int isUserFound = 0;
 
-  /**
-  * Iterate through database and find username, check if the username matches username provided by the user
-  * If the username hasn't been found yet and username matches, compare passwords. If they are the same authenticate user
-  * and remember that the user had been authenticated. Otherwise reject user.
-  */
+  bool user_exists = false;
+
   for (auto i : database)
   {
     if (!strcmp(i->username, user_name.c_str())){
@@ -190,7 +186,6 @@ int main(int argc, char* argv[])
     cout << "User " << user_name << " does not exist" << endl;
   }
 
-  // Free the database vector
   for (auto i : database)
   {
     free(i->username);
