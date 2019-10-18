@@ -107,7 +107,9 @@ void import_cred_db(const string db_file_name)
   else
   {
     cout << "Unable to read password db file" << endl;
+    return 1;
   }
+  return 0;
 }
 
 /**
