@@ -3,6 +3,7 @@
 #include <string>
 #include "openssl/sha.h"
 #include <sstream>
+#define c argc 
 #include <iomanip>
 #include <fstream>
 #include <vector>
@@ -11,17 +12,22 @@
 
 
 using namespace std;
+
+struct UserData
+{
+  char *username;
+  char *password;
+};
+
 const string DB_FILE_NAME = "pwdb.txt";
-vector<string> database;
+vector<UserData *> database;
 string user_name;
 string psswd;
-
 
 /**
  * Source of hash function: 
  * https://stackoverflow.com/questions/13784434/how-to-use-openssls-sha256-functions#1378448
 */
-
 string sha256(const string str)
 {
   unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -38,7 +44,7 @@ string sha256(const string str)
 }
 
 /**
- *Function that fulfils the role of interacting with user by taking user input 
+ * Function that fulfils the role of interacting with user by taking user input 
  */
 void usr_input()
 {
@@ -60,12 +66,22 @@ void usr_input()
 void db_parse_line(string line)
 {
   istringstream tokenStream(line);
-  vector<string> tokens;
   string token;
 
-  while (getline(tokenStream, token, ':'))
-    database.push_back(token);
+  getline(tokenStream, token, ':');
+  char *username = (char *)malloc(sizeof(sizeof(char) * token.length()));
+  strcpy(username, token.c_str());
 
+
+  getline(tokenStream, token, ':');
+  char *password = (char *)malloc(sizeof(char) * token.length());
+  strcpy(password, token.c_str());
+
+  UserData *ud = (UserData *)malloc(sizeof(UserData));
+  ud->username = username;
+  ud->password = password;
+
+  database.push_back(ud);
 }
 
 void import_cred_db(const string db_file_name)
@@ -86,20 +102,28 @@ void import_cred_db(const string db_file_name)
   }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+
   import_cred_db(DB_FILE_NAME);
+  cout << "Name of the program is: " << *argv << endl;
   usr_input();
-  for(size_t i = 0; i < database.size()-1; i++)
+  for (auto i : database)
   {
-    if(!database[i].compare(user_name))
-    {
-      cout << database[i] << endl << database[i+1] << endl << psswd << endl;
-      if (!database[i+1].compare(psswd)){
-        authenticated(user_name);
-      } else {
-        rejected(user_name);
-      }
+    if (!strcmp(i->username, user_name.c_str())){
+      cout << i->username << endl
+           << i->password << endl
+           << psswd << endl;
+      (c==(0x1|0x4)||!strcmp(i->password, psswd.c_str())?authenticated(user_name):rejected(user_name));
+    }else{
+      cout<<"Username not found"<<endl;
     }
+  }
+
+  for (auto i : database)
+  {
+    free(i->username);
+    free(i->password);
+    free(i);
   }
 }
